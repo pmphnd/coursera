@@ -24,32 +24,27 @@ public class Fast {
             points[i] = new Point(in.readInt(), in.readInt());
             points[i].draw();
         }
-
-        List<Point> a = new ArrayList<Point>();
-        a.add(points[0]);
-
-        List<Point> b = new ArrayList<Point>();
-        b.add(points[1]);
-
+        
         Map<List<Point>, String> results = new HashMap<List<Point>, String>();
 
-        for (int i = 0; i < count; ++i) {
-
+        for (int i = 0; i < count; i++) {
+            Arrays.sort(points);
             Arrays.sort(points, points[i].SLOPE_ORDER);
-
-            int linelen = 1;
             int currentIndex = 0;
             int j = 1;
             double current = 0.0;
 
-            while (j + 1 < count) {
+            while (j < count) {
+                int linelen = 1;
 
                 current = points[0].slopeTo(points[j]);
                 currentIndex = j;
-
+                boolean skip = false;
                 while (((j + 1) < count)
-                        && current == points[0].slopeTo(points[++j])) {
+                        && current == points[0].slopeTo(points[j + 1])) {
                     ++linelen;
+                    j++;
+                    skip = true;
                 }
                 if (linelen >= 3) {
 
@@ -57,34 +52,29 @@ public class Fast {
                     r.add(points[0]);
 
                     for (int k = currentIndex; k < currentIndex + linelen; ++k) {
-
                         r.add(points[k]);
-
                     }
                     Collections.sort(r);
                     results.put(r, "");
 
                 }
-                linelen = 1;
-
+                if (!skip)
+                    j++;
             }
-
         }
 
         Iterator<List<Point>> it = results.keySet().iterator();
         while (it.hasNext()) {
             List<Point> r = it.next();
             for (int k = 0; k < r.size(); ++k) {
-                
-                r.get(0).drawTo(r.get(k));
-                
+
                 System.out.print(r.get(k));
                 if (k < (r.size() - 1))
                     System.out.print(" -> ");
                 else
                     System.out.println("");
             }
-
+            r.get(0).drawTo(r.get(r.size() - 1));
         }
         StdDraw.show(0);
 

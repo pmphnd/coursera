@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Brute {
 
     public static void main(String[] args) {
@@ -17,6 +19,8 @@ public class Brute {
             points[i].draw();
         }
 
+        Arrays.sort(points);
+
         for (int i = 0; i < count; ++i)
             for (int j = i + 1; j < count; ++j) {
                 double s1 = points[i].slopeTo(points[j]);
@@ -28,9 +32,9 @@ public class Brute {
                     for (int l = k + 1; l < count; ++l) {
                         double s3 = points[i].slopeTo(points[l]);
                         if (s1 == s3) {
-                            points[i].drawTo(points[j]);
-                            points[i].drawTo(points[k]);
+
                             points[i].drawTo(points[l]);
+
                             System.out.println(points[i] + " -> " + points[j]
                                     + " -> " + points[k] + " -> " + points[l]);
                         }
